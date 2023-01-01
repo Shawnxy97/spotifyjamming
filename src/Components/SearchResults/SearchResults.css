@@ -1,0 +1,21 @@
+.SearchResults {
+    width: 50%;
+    height: 950px;
+    padding: 0.8rem;
+    background-color: rgba(1, 12, 63, 0.7);
+    border-radius: 5px;
+    box-shadow: 0 2px 5px 2px black;
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+@media only screen and (max-width: 1200px){
+    .SearchResults{
+        width: 90%;
+        margin-bottom: 2rem;
+    }
+}

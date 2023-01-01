@@ -1,0 +1,41 @@
+.SearchBar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* by default, flex items have same height, using align-item:center makes those flex items center in the cross axis, they can have different height, but align center*/
+    padding-top: 6.94rem;
+    margin-bottom: 6.33rem;
+}
+
+.SearchBar input {
+    width: 287px;
+    font-size: 1rem;
+    padding: 0.88rem 0;
+    border: 1px solid #fff;
+    text-align: center;
+    border-radius: 3px;
+    margin-bottom: 2rem;
+}
+
+.SearchBar input:focus{
+    outline: none;
+}
+
+.SearchButton {
+    width: 8rem;
+    cursor: pointer;
+    padding: 0.7rem 0;
+    border: 0;
+    border-radius: 50px;
+    color: white;
+    background-color: #010c3f;
+    font-weight: 500;
+    font-size: 0.8rem;
+    transition: background-color 0.5s;
+    /* transition allows us to change property values smoothly */
+}
+
+
+.SearchButton:hover {
+    background-color: rgba(108, 65, 233, .7);
+  }
