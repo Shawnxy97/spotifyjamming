@@ -1,5 +1,9 @@
 # React Project spotifyjammming
 
+## Project Structure
+
+![components diagram](./public/notes/projectStructure.png)
+
 ## Skills 
 
 - React Class Component
@@ -11,6 +15,7 @@
 - Async requests with a 3rd party API(Spotify)
 
 - [Responsive] layout using Flexbox
+
 
 ## Takeaways & Little Tricks
 
@@ -86,3 +91,16 @@
             background: transparent;
         }
         ```
+
+    4. Controlled input element
+
+        Use state & onChange
+
+        ```
+        ...
+        this.setState({value: e.target.value});
+
+        ...
+        ```
+
+        Using this combination can have the value of the input and manage it as a state of the component.
