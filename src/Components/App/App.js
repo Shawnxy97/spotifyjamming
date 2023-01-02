@@ -3,6 +3,7 @@ import './App.css';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { Playlist } from '../Playlist/Playlist';
 import { SearchResults } from '../SearchResults/SearchResults';
+import { Spotify  } from '../../util/Spotify';
 
 const hardcodeResults = [
   {'uri': '001','id': '001', "name": 'Dancing with A Stranger', 'artist': 'Sam Smith', 'album': 'Dancing with A Stranger'},
@@ -61,8 +62,9 @@ class App extends React.Component{
   }
 
   search(term){
-    console.log(term);
-    //we will use this in later steps
+    Spotify.search(term).then(results => {
+      this.setState({searchResults: results});
+    })
   }
 
   render(){

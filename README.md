@@ -104,3 +104,22 @@
         ```
 
         Using this combination can have the value of the input and manage it as a state of the component.
+
+    5. .json() & JSON.parse()
+
+        - .json() is asynchronous and returns a Promise object that resolves to a JavaScript object
+
+            ```
+            fetch(url, {params})
+            .then( response => {
+                return response.json();
+            })
+            .then( jsonResponse => {
+                //jsonResponse is a JavaScript object that contains requested info
+                ...
+
+            });
+            ```
+
+        - JSON.parse() is synchronous that can parse a string and change the resulting returned JavaScript object
+        
