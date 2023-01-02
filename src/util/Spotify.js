@@ -1,5 +1,6 @@
 import {clientID, redirectURI} from './personalInfo';
 let userToken;
+let baseAddress = "https://api.spotify.com";
 
 
 export const Spotify = {
@@ -40,5 +41,43 @@ export const Spotify = {
                 return [];
             }
         })
+    },
+
+    savePlaylist(playlistName, trackURIs){
+        if(!playlistName || !trackURIs.length){
+            return;
+        }
+        let accessToken = Spotify.getAccessToken();
+        let headers = {Authorization: `Bearer ${accessToken}`};
+        let userID;
+
+        return fetch("https://api.spotify.com/v1/me", {headers: headers})
+        .then( response => {
+            // console.log(response);
+            return response.json();
+        })
+        .then( jsonResponse => {
+            
+            userID = jsonResponse.id;
+            //Create a new playlist
+            return fetch(baseAddress+`/v1/users/${userID}/playlists`, {
+                headers:headers,
+                method: "POST",
+                body: JSON.stringify({name: playlistName})
+            })
+        })
+        .then( response => {
+            return response.json();
+        })
+        .then( jsonResponse => {
+            let playlistID = jsonResponse.id;
+            //Get the playlistID and push tracks into the new playlist
+            return fetch(baseAddress+`/v1/playlists/${playlistID}/tracks`, {
+                headers: headers,
+                method: "POST",
+                body: JSON.stringify({"uris": trackURIs})
+            })
+        })
+
     }
 };

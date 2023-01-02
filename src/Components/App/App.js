@@ -22,9 +22,9 @@ class App extends React.Component{
   constructor(props){
     super(props);
 
-    this.state = {searchResults: hardcodeResults,
+    this.state = {searchResults: [],
                   playlistName: "My Playlist",
-                  playlistTracks: hardcodePlaylist
+                  playlistTracks: []
     };
 
     //bind this, since this addTrack method will be passed to use as an Event handler, make sure this inside the method refers to App instance
@@ -57,7 +57,11 @@ class App extends React.Component{
 
   savePlaylist(){
     let trackURIs = this.state.playlistTracks.map(track => track.uri);
-    console.log(trackURIs);
+    Spotify.savePlaylist(this.state.playlistName, trackURIs)
+    .then(()=> {
+      //We want to make sure the playlist is saved successfully
+      this.setState({playlistName: "New Playlist", playlistTracks: []});
+    });
 
   }
 
