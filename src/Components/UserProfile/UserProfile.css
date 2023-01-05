@@ -4,6 +4,7 @@
     right: 1rem;
     border-radius: 3px;
     display: flex;
+    cursor: pointer;
 }
 
 .username {

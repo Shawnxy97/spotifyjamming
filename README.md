@@ -130,9 +130,22 @@
 
         <img src={guestImage} />
         ```
+
+    7. Promise.all
+
+        Promise.all() accepts an array of promises as its argument and retrns a single promise.
+
+        > If every promise in the argumentt array resolves, the single promise returned from Promise.all() will resolve with **an array containing the resolve value from each promise** in the argument array
+
+        > If any promise from the argument array rejects, the single promise returned from Promise.all() will **immediately reject with the reason** that promise rejected.
         
 ## Additional Features
 
 1. User Profile
 
     Can show a user's username and profile image.
+
+2. Display user's playlists
+
+    Click user profile area -> Show a dropdown list with some options, like my playlists, logout
+    -> Click My Playlists -> Show user's playlists

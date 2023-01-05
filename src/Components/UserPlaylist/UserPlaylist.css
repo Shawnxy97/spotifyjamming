@@ -1,0 +1,36 @@
+.Playlists {
+    display: flex;
+    width: 100%;
+    padding: 1rem 0;
+    flex-wrap: wrap;
+}
+.UserPlaylist {
+    width: 37%;
+    max-height: 600px;
+    background-color: rgba(1, 12, 63, 0.7);
+    padding: 2.27rem 1.16rem;
+    border-radius: 5px;
+    box-shadow: 0 4px 2px 2px black;
+    margin: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+    
+}
+
+.UserPlaylist h2 {
+    text-align: left;
+}
+
+::-webkit-scrollbar{
+    width: 0px;
+    background: transparent;
+}
+
+@media only screen and (max-width: 1200px){
+    .UserPlaylist{
+        width: 90%;
+    }
+}

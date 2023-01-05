@@ -5,6 +5,8 @@ import { Playlist } from '../Playlist/Playlist';
 import { SearchResults } from '../SearchResults/SearchResults';
 import { Spotify  } from '../../util/Spotify';
 import { UserProfile } from '../UserProfile/UserProfile';
+import { UserDropdown } from '../UserDropdown/UserDropdown';
+import { UserPlaylist } from '../UserPlaylist/UserPlaylsit';
 import defaultImage from "../UserProfile/guestImage.jpg";
 
 const hardcodeResults = [
@@ -28,7 +30,10 @@ class App extends React.Component{
                   playlistName: "My Playlist",
                   playlistTracks: [],
                   userName: "anonymous",
-                  userImage: defaultImage
+                  userImage: defaultImage,
+                  userDropdown: false,
+                  userPlaylists: [],
+                  isDisplayUserPlaylists: false
 
     };
 
@@ -38,6 +43,9 @@ class App extends React.Component{
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
+    this.handleUserProfileHover = this.handleUserProfileHover.bind(this);
+    this.handleUserDropdownOut = this.handleUserDropdownOut.bind(this);
+    this.handlePlaylistClick = this.handlePlaylistClick.bind(this);
 
   }
 
@@ -86,6 +94,34 @@ class App extends React.Component{
       }
       
     });
+
+    Spotify.getUserPlaylists()
+    .then( results => {
+      // this.setState({userPlaylists: results});
+      // console.log(this.state.userPlaylists);
+
+      this.setState({userPlaylists: results});
+      console.log(results)
+      
+    })
+
+    
+  }
+
+ 
+
+  handleUserProfileHover(){
+    this.setState({userDropdown: true});
+    console.log(this.state.userDropdown)
+  }
+
+  handleUserDropdownOut(){
+    this.setState({userDropdown:false});
+    console.log(this.state.userDropdown);
+  }
+
+  handlePlaylistClick(){
+    this.setState({isDisplayUserPlaylists: !this.state.isDisplayUserPlaylists});
   }
 
 
@@ -94,12 +130,16 @@ class App extends React.Component{
     return (
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing </h1>
-        <UserProfile username={this.state.userName} image={this.state.userImage} />
+        <UserProfile username={this.state.userName} image={this.state.userImage} onMouseEnter={this.handleUserProfileHover} />
+        <UserDropdown isShow={this.state.userDropdown}  onMouseLeave={this.handleUserDropdownOut} onClick={this.handlePlaylistClick}/>
+        
         <div className="App">
-          <SearchBar onSearch={this.search} />
+          { !this.state.isDisplayUserPlaylists && <SearchBar onSearch={this.search} />}
           <div className="App-playlist">
-            <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
-            <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} onRemove={this.removeTrack} onNameChange={this.updatePlaylistName} onSave={this.savePlaylist} />
+            { !this.state.isDisplayUserPlaylists && <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />}
+            { !this.state.isDisplayUserPlaylists && <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} onRemove={this.removeTrack} onNameChange={this.updatePlaylistName} onSave={this.savePlaylist} />}
+            { this.state.isDisplayUserPlaylists && <UserPlaylist playlists={this.state.userPlaylists} />}
+            
           </div>
         </div>
       </div>

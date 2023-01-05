@@ -93,5 +93,57 @@ export const Spotify = {
         .then( jsonResponse => {
             return [jsonResponse.display_name, jsonResponse.images];
         })
+    },
+
+    getUserPlaylists(){
+        let accessToken = Spotify.getAccessToken();
+        let headers = {Authorization: `Bearer ${accessToken}`};
+
+        return fetch(baseAddress+"/v1/me/playlists", {headers: headers})
+        .then( response => {
+            // console.log(response)
+            return response.json();
+        })
+        .then( jsonResponse => {
+            // console.log(jsonResponse)
+            let playlists = jsonResponse.items.map(playlist=> ({playlistName: playlist.name, playlistTracks: playlist.tracks}));
+            
+            let userPlaylists = [];
+            for(let playlist of playlists){
+                Spotify.getTracksinUserPlaylist(playlist.playlistTracks.href)
+                .then( result => {
+                userPlaylists.push({playlistName: playlist.playlistName, tracks: result})
+                })
+            }
+            return userPlaylists;
+            // let fetchList = playlists.map(track => fetch(track.href, {headers: headers}));
+            // let fetchPromises = Promise.all(fetchList);
+            // return fetchPromises;
+        })
+
+       
+        
+    },
+
+    getTracksinUserPlaylist(trackHref){
+        let accessToken = Spotify.getAccessToken();
+        let headers = {Authorization: `Bearer ${accessToken}`};
+        // console.log(trackHref)
+
+        return fetch(trackHref, {headers: headers})
+        .then( response => {
+            return response.json();
+        })
+        .then( jsonResponse => {
+            // console.log(jsonResponse);
+            let tracks = [];
+            jsonResponse.items.map( item => {
+                if(item.track){
+                    tracks.push({id:item.track.id, name:item.track.name, artist: item.track.artists[0].name, album: item.track.album.name, uri: item.track.uri});
+                }
+            });
+            return tracks;
+           
+        })
     }
 };

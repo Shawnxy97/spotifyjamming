@@ -27,7 +27,7 @@ export class Track extends React.Component {
     }
     render(){
         let {name, artist, album} = this.props.track;
-
+        // console.log(name)
         return (
             <div className="Track">
                 <div className="Info">
