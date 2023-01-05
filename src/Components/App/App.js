@@ -4,6 +4,8 @@ import { SearchBar } from '../SearchBar/SearchBar';
 import { Playlist } from '../Playlist/Playlist';
 import { SearchResults } from '../SearchResults/SearchResults';
 import { Spotify  } from '../../util/Spotify';
+import { UserProfile } from '../UserProfile/UserProfile';
+import defaultImage from "../UserProfile/guestImage.jpg";
 
 const hardcodeResults = [
   {'uri': '001','id': '001', "name": 'Dancing with A Stranger', 'artist': 'Sam Smith', 'album': 'Dancing with A Stranger'},
@@ -24,7 +26,10 @@ class App extends React.Component{
 
     this.state = {searchResults: [],
                   playlistName: "My Playlist",
-                  playlistTracks: []
+                  playlistTracks: [],
+                  userName: "anonymous",
+                  userImage: defaultImage
+
     };
 
     //bind this, since this addTrack method will be passed to use as an Event handler, make sure this inside the method refers to App instance
@@ -71,10 +76,25 @@ class App extends React.Component{
     })
   }
 
+  componentDidMount(){
+    Spotify.getUserProfile().then(results => {
+      if(results[1]){
+        // console.log(results)
+        this.setState({userName:results[0], userImage: results[1][0]["url"]});
+      }else{
+        this.setState({userName: results[0]});
+      }
+      
+    });
+  }
+
+
+
   render(){
     return (
       <div>
-        <h1>Ja<span className="highlight">mmm</span>ing</h1>
+        <h1>Ja<span className="highlight">mmm</span>ing </h1>
+        <UserProfile username={this.state.userName} image={this.state.userImage} />
         <div className="App">
           <SearchBar onSearch={this.search} />
           <div className="App-playlist">

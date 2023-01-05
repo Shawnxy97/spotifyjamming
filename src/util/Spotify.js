@@ -1,3 +1,4 @@
+import { findRenderedComponentWithType } from 'react-dom/test-utils';
 import {clientID, redirectURI} from './personalInfo';
 let userToken;
 let baseAddress = "https://api.spotify.com";
@@ -79,5 +80,18 @@ export const Spotify = {
             })
         })
 
+    },
+
+    getUserProfile(){
+        let accessToken = Spotify.getAccessToken();
+        let headers = {Authorization: `Bearer ${accessToken}`};
+
+        return fetch(baseAddress+"/v1/me", {headers: headers})
+        .then( response => {
+            return response.json();
+        })
+        .then( jsonResponse => {
+            return [jsonResponse.display_name, jsonResponse.images];
+        })
     }
 };

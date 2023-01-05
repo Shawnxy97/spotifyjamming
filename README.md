@@ -122,4 +122,17 @@
             ```
 
         - JSON.parse() is synchronous that can parse a string and change the resulting returned JavaScript object
+
+    6. An image should be import to the component first and then be used as a variable in the component
+
+        ```
+        import guestImage from './guestImage.jpg'; 
+
+        <img src={guestImage} />
+        ```
         
+## Additional Features
+
+1. User Profile
+
+    Can show a user's username and profile image.

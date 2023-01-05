@@ -1,0 +1,18 @@
+.UserProfile {
+    position:absolute;
+    top: 0.5rem;
+    right: 1rem;
+    border-radius: 3px;
+    display: flex;
+}
+
+.username {
+ line-height: 2.5rem;
+ padding: 0 0.5rem;
+ color: white;
+ font-weight: 500;
+}
+
+.image {
+    width: 2.5rem;
+}
