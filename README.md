@@ -138,6 +138,24 @@
         > If every promise in the argumentt array resolves, the single promise returned from Promise.all() will resolve with **an array containing the resolve value from each promise** in the argument array
 
         > If any promise from the argument array rejects, the single promise returned from Promise.all() will **immediately reject with the reason** that promise rejected.
+
+    8. Git branch tricks
+
+        ```
+        git pull
+        ```
+        Pull the changes from upstream. Your master needs to be up to date
+
+        ```
+        git checkout -b [branch name]
+        ```
+        Create the branch on your local machine and switch in this branch
+        ```
+        git push origin [branch name]
+        ```
+        Push the branch on GitHub
+
+        [More git branch info](https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches)
         
 ## Additional Features
 
@@ -149,3 +167,22 @@
 
     Click user profile area -> Show a dropdown list with some options, like my playlists, logout
     -> Click My Playlists -> Show user's playlists
+
+## Issues
+
+1. UserProfile Component and User Feature Dropdown list
+
+    Description: Now, the hidden dropdown list is shown when a user hovers over the UserProfile component, and this dropdown list remains visible until a MouseLeave event on it is triggered.
+
+    Problem: If a user hovers on the UserProfile component only, then just exits this part, the MouseLeave event on the dropdown list will not be triggered and the dropdown list will stay visible.
+
+    Solution:
+    
+    > Add a MouseEnter and a MouseLeave event to the UserProfile Component.
+        When a user hovers over the UserProfile Component, set the dropdown list visible
+
+        >  When a user exits the current UserProfile Component, there are two conditions: 1. the user moves down to the Dropdown Component 2. the user browsers other places
+
+        When a user exits, set a timer to make the Dropdown Component disappear after 0.5s
+
+        If the user moves down to the Dropdown Component (this component detects a MouseEnter event), cancel the timer to keep the Dropdown Component on the screen

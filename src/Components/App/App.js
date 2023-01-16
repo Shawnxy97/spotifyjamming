@@ -27,13 +27,16 @@ class App extends React.Component{
     super(props);
 
     this.state = {searchResults: [],
-                  playlistName: "My Playlist",
+                  playlistName: "New Playlist",
                   playlistTracks: [],
                   userName: "anonymous",
                   userImage: defaultImage,
                   userDropdown: false,
                   userPlaylists: [],
-                  isDisplayUserPlaylists: false
+                  isDisplayUserPlaylists: false,
+                  userProfileHovered: false,
+                  dropdownHovered: false
+                  
 
     };
 
@@ -46,6 +49,8 @@ class App extends React.Component{
     this.handleUserProfileHover = this.handleUserProfileHover.bind(this);
     this.handleUserDropdownOut = this.handleUserDropdownOut.bind(this);
     this.handlePlaylistClick = this.handlePlaylistClick.bind(this);
+    this.handleUserDropdownIn = this.handleUserDropdownIn.bind(this);
+    this.handleUserProfileOut = this.handleUserProfileOut.bind(this);
 
   }
 
@@ -74,7 +79,20 @@ class App extends React.Component{
     .then(()=> {
       //We want to make sure the playlist is saved successfully
       this.setState({playlistName: "New Playlist", playlistTracks: []});
-    });
+    }); 
+
+
+    //After saving a new playlist, fetch the playlists again
+    
+    Spotify.getUserPlaylists()
+    .then( results => {
+      // this.setState({userPlaylists: results});
+      // console.log(this.state.userPlaylists);
+
+      this.setState({userPlaylists: results});
+      // console.log(results)
+      
+    })
 
   }
 
@@ -101,7 +119,7 @@ class App extends React.Component{
       // console.log(this.state.userPlaylists);
 
       this.setState({userPlaylists: results});
-      console.log(results)
+      // console.log(results)
       
     })
 
@@ -111,17 +129,36 @@ class App extends React.Component{
  
 
   handleUserProfileHover(){
-    this.setState({userDropdown: true});
-    console.log(this.state.userDropdown)
+    this.setState({userProfileHovered: true});
+    this.setState({userDropdown:true});
+
+    
+  }
+
+  handleUserProfileOut(){
+    this.setState({userProfileHovered: false});
+
+    //Set a timer: after 0.5 seconds, the dropdown list will disappear
+    this.dropdownTimerID = setTimeout(()=> {
+      this.setState({userDropdown: false});
+    }, 500)
+  }
+
+  handleUserDropdownIn(){
+    //If a user hovers over the Dropdown Component in  0.5 seconds, cancel the timer
+    clearTimeout(this.dropdownTimerID);
+    console.log("--------------The timer for dropdown list is cancelled.");
   }
 
   handleUserDropdownOut(){
     this.setState({userDropdown:false});
-    console.log(this.state.userDropdown);
+    // console.log(this.state.userDropdown, "displayflag");
   }
 
   handlePlaylistClick(){
     this.setState({isDisplayUserPlaylists: !this.state.isDisplayUserPlaylists});
+
+    
   }
 
 
@@ -130,8 +167,8 @@ class App extends React.Component{
     return (
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing </h1>
-        <UserProfile username={this.state.userName} image={this.state.userImage} onMouseEnter={this.handleUserProfileHover} />
-        <UserDropdown isShow={this.state.userDropdown}  onMouseLeave={this.handleUserDropdownOut} onClick={this.handlePlaylistClick}/>
+        <UserProfile username={this.state.userName} image={this.state.userImage} onMouseEnter={this.handleUserProfileHover} onMouseOut={this.handleUserProfileOut} />
+        <UserDropdown isShow={this.state.userDropdown}  onMouseIn={this.handleUserDropdownIn} onMouseLeave={this.handleUserDropdownOut} onClick={this.handlePlaylistClick}/>
         
         <div className="App">
           { !this.state.isDisplayUserPlaylists && <SearchBar onSearch={this.search} />}

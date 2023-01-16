@@ -10,10 +10,10 @@ export const Spotify = {
             return userToken;
         }else{
             const url = window.location.href;
-            let re = /access_token=([^&]*)/;
-            let re2 = /expires_in=([^&]*)/;
-            const token = url.match(re);
-            const expireIn = url.match(re2);
+            let reOftoken = /access_token=([^&]*)/;
+            let reOfExpireTime = /expires_in=([^&]*)/;
+            const token = url.match(reOftoken);
+            const expireIn = url.match(reOfExpireTime);
 
             if(token && expireIn){
                 userToken = token[1];
@@ -106,15 +106,16 @@ export const Spotify = {
         })
         .then( jsonResponse => {
             // console.log(jsonResponse)
-            let playlists = jsonResponse.items.map(playlist=> ({playlistName: playlist.name, playlistTracks: playlist.tracks}));
+            let playlists = jsonResponse.items.map(playlist=> ({playlistName: playlist.name, tracksHref: playlist.tracks.href}));
             
             let userPlaylists = [];
             for(let playlist of playlists){
-                Spotify.getTracksinUserPlaylist(playlist.playlistTracks.href)
+                Spotify.getTracksinUserPlaylist(playlist.tracksHref)
                 .then( result => {
                 userPlaylists.push({playlistName: playlist.playlistName, tracks: result})
                 })
             }
+            console.log(userPlaylists, "---------- UserPlaylists Log");
             return userPlaylists;
             // let fetchList = playlists.map(track => fetch(track.href, {headers: headers}));
             // let fetchPromises = Promise.all(fetchList);

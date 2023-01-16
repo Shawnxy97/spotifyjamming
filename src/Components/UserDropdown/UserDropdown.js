@@ -11,7 +11,7 @@ export class UserDropdown extends React.Component {
             isDisplay = {display: "none"};
         }
         return (
-            <div id="UserDropdown" style={isDisplay} onMouseLeave={this.props.onMouseLeave}>
+            <div id="UserDropdown" style={isDisplay} onMouseEnter={this.props.onMouseIn} onMouseLeave={this.props.onMouseLeave}>
                 <ul>
                     <li onClick={this.props.onClick}>My Playlists</li>
                     <li>Logout</li>

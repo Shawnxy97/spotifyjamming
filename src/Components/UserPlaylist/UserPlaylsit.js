@@ -1,6 +1,7 @@
 import React from 'react';
 import './UserPlaylist.css';
 import { Track } from '../Track/Track';
+import { TrackList } from '../TrackList/TrackList';
 
 export class UserPlaylist extends React.Component {
     render(){
@@ -17,11 +18,14 @@ export class UserPlaylist extends React.Component {
             {this.props.playlists.map( playlist => {
                 return (<div className='UserPlaylist'>
                             <h2>{playlist.playlistName}</h2>
-                            {/* <ul>
-                            {playlist.tracks.map(track => <li>{track.name}</li>)}
-                            </ul> */}
                             {playlist.tracks.map( track => <Track track={track} /> )}
                         </div>);
+                // return (
+                //     <div className='UserPlaylist'>
+                //         <h2>{playlist.playlistName}</h2>
+                //         {playlist.tracks.map( track => <TrackList  tracks={track} isRemoval={true} />)}
+                //     </div>
+                // );
             })}
         </div>
         );
