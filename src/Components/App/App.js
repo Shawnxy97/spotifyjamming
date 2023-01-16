@@ -161,6 +161,13 @@ class App extends React.Component{
     
   }
 
+  // handleSelectBarChange(barName){
+  //   if(barName === 'new'){
+
+  //   }else if(barName === 'mine'){
+
+  //   }
+  // }
 
 
   render(){
@@ -174,7 +181,7 @@ class App extends React.Component{
           { !this.state.isDisplayUserPlaylists && <SearchBar onSearch={this.search} />}
           <div className="App-playlist">
             { !this.state.isDisplayUserPlaylists && <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />}
-            { !this.state.isDisplayUserPlaylists && <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} onRemove={this.removeTrack} onNameChange={this.updatePlaylistName} onSave={this.savePlaylist} />}
+            { !this.state.isDisplayUserPlaylists && <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} userPlaylists={this.state.userPlaylists} onRemove={this.removeTrack} onNameChange={this.updatePlaylistName} onSave={this.savePlaylist} />}
             { this.state.isDisplayUserPlaylists && <UserPlaylist playlists={this.state.userPlaylists} />}
             
           </div>
