@@ -35,7 +35,9 @@ class App extends React.Component{
                   userPlaylists: [],
                   isDisplayUserPlaylists: false,
                   userProfileHovered: false,
-                  dropdownHovered: false
+                  dropdownHovered: false,
+                  newListFlag: true,
+                  selectedPlaylistID: ""
                   
 
     };
@@ -51,22 +53,77 @@ class App extends React.Component{
     this.handlePlaylistClick = this.handlePlaylistClick.bind(this);
     this.handleUserDropdownIn = this.handleUserDropdownIn.bind(this);
     this.handleUserProfileOut = this.handleUserProfileOut.bind(this);
+    this.handleUserTrackUpdate = this.handleUserTrackUpdate.bind(this);
+    this.handleNewListFlag = this.handleNewListFlag.bind(this);
+    this.getSelectedPlaylistID = this.getSelectedPlaylistID.bind(this);
 
   }
 
-  addTrack(newTrack){
-    let playlistTracks = this.state.playlistTracks;
-    if(playlistTracks.find(track => track.id === newTrack.id)){
-      return;
+  addTrack(newTrack, playlistID){
+    
+    if(this.state.newListFlag){
+        let playlistTracks = this.state.playlistTracks;
+      if(playlistTracks.find(track => track.id === newTrack.id)){
+        return;
+      }
+      playlistTracks.push(newTrack);
+      this.setState({playlistTracks: playlistTracks});
+    }else{
+      // console.log(playlistID);
+      // console.log(newTrack);
+      let updateTracks = {};
+      let userPlaylists = this.state.userPlaylists;
+      for(let playlist of userPlaylists){
+        if(playlist.playlistID === playlistID){
+          
+          if(playlist.tracks.find(track => track.id === newTrack.id)){
+            return;
+          }
+          playlist.tracks.push(newTrack);
+          updateTracks = playlist;
+        }
+      }
+      
+      
+      
+      console.log(userPlaylists);
+      console.log(updateTracks);
+
+      this.setState({userPlaylists: userPlaylists});
     }
-    playlistTracks.push(newTrack);
-    this.setState({playlistTracks: playlistTracks});
+    
+    
   }
 
-  removeTrack(removedTrack){
-    let tracks = this.state.playlistTracks;
-    let newTrakcs = tracks.filter(track => track.id !== removedTrack.id);
-    this.setState({playlistTracks: newTrakcs});
+  removeTrack(removedTrack, playlistID){
+    if(this.state.newListFlag){
+      let tracks = this.state.playlistTracks;
+      let newTrakcs = tracks.filter(track => track.id !== removedTrack.id);
+      this.setState({playlistTracks: newTrakcs});
+    }else{
+      console.log(removedTrack, playlistID);
+      let updateTracks = {};
+      let userPlaylists = this.state.userPlaylists;
+      for(let playlist of userPlaylists){
+        if(playlist.playlistID === playlistID){
+          
+          for(let i = 0; i < playlist.tracks.length; i++){
+            if(playlist['tracks'][i].id === removedTrack.id){
+
+              //remove an item at the specific index
+              playlist.tracks.splice(i, 1);
+            }
+          }
+          
+          // console.log(playlist);
+          updateTracks = playlist;
+          
+        }
+      }
+      console.log(userPlaylists);
+      this.setState({userPlaylists: userPlaylists});
+    }
+    
   }
 
   updatePlaylistName(newName){
@@ -161,14 +218,29 @@ class App extends React.Component{
     
   }
 
-  // handleSelectBarChange(barName){
-  //   if(barName === 'new'){
+  handleUserTrackUpdate(playlistID, updateTrackList){
+    // console.log(updateTrackList);
+    // console.log(playlistID);
+    //get uris of updated tracks
+    //update the state's userplaylist
+  }
 
-  //   }else if(barName === 'mine'){
+  handleUserTrackRemove(playlistID, updateTracklist){
+    //update Userplaylist state
+  }
 
-  //   }
-  // }
+  handleUserTrackAdd(playlistID, updateTracklist){
 
+  }
+
+  handleNewListFlag(flag){
+    this.setState({newListFlag: flag});
+  }
+
+  getSelectedPlaylistID(id){
+    this.setState({selectedPlaylistID:id});
+
+  }
 
   render(){
     return (
@@ -180,8 +252,8 @@ class App extends React.Component{
         <div className="App">
           { !this.state.isDisplayUserPlaylists && <SearchBar onSearch={this.search} />}
           <div className="App-playlist">
-            { !this.state.isDisplayUserPlaylists && <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />}
-            { !this.state.isDisplayUserPlaylists && <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} userPlaylists={this.state.userPlaylists} onRemove={this.removeTrack} onNameChange={this.updatePlaylistName} onSave={this.savePlaylist} />}
+            { !this.state.isDisplayUserPlaylists && <SearchResults selectedPlaylistID={this.state.selectedPlaylistID} searchResults={this.state.searchResults} onAdd={this.addTrack} newListFlag={this.state.newListFlag} />}
+            { !this.state.isDisplayUserPlaylists && <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} userPlaylists={this.state.userPlaylists} onRemove={this.removeTrack} onNameChange={this.updatePlaylistName} onSave={this.savePlaylist} onUserTrackUpdate={this.handleUserTrackUpdate} handleNewListFlag={this.handleNewListFlag} getSelectedPlaylistID={this.getSelectedPlaylistID}/>}
             { this.state.isDisplayUserPlaylists && <UserPlaylist playlists={this.state.userPlaylists} />}
             
           </div>

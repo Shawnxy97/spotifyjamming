@@ -106,13 +106,13 @@ export const Spotify = {
         })
         .then( jsonResponse => {
             // console.log(jsonResponse)
-            let playlists = jsonResponse.items.map(playlist=> ({playlistName: playlist.name, tracksHref: playlist.tracks.href}));
+            let playlists = jsonResponse.items.map(playlist=> ({playlistID: playlist.id, playlistName: playlist.name, tracksHref: playlist.tracks.href}));
             
             let userPlaylists = [];
             for(let playlist of playlists){
                 Spotify.getTracksinUserPlaylist(playlist.tracksHref)
                 .then( result => {
-                userPlaylists.push({playlistName: playlist.playlistName, tracks: result})
+                userPlaylists.push({playlistID: playlist.playlistID, playlistName: playlist.playlistName, tracks: result})
                 })
             }
             console.log(userPlaylists, "---------- UserPlaylists Log");

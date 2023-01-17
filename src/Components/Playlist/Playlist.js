@@ -1,7 +1,6 @@
 import React from 'react';
 import './Playlist.css';
 import { TrackList } from '../TrackList/TrackList';
-import { Track } from '../Track/Track';
 
 export class Playlist extends React.Component {
     constructor(props){
@@ -10,6 +9,7 @@ export class Playlist extends React.Component {
         this.state = {
             selector: "new",
             selectedTrackContent: [],
+            selectedPlaylistID: "",
             selectedPlaylistName: "",
             listsVisibility: true
         };
@@ -31,6 +31,10 @@ export class Playlist extends React.Component {
         e.target.style.backgroundColor = "#6c41ec";
         this.setState({selector: e.target.value, listsVisibility: true});
         console.log(e.target.value);
+        
+
+        const selectorFlag = e.target.value === "new";
+        this.props.handleNewListFlag(selectorFlag);
     }
 
     componentDidMount(){
@@ -39,7 +43,10 @@ export class Playlist extends React.Component {
     }
 
     handlePlaylistsClick(e){
-        const playlistname = e.target.getAttribute('value');
+        const playlistname = e.target.getAttribute('name');
+        const playlistID = e.target.getAttribute('value');
+        console.log(playlistID)
+
         let tracks = [];
 
         const selected = this.props.userPlaylists.filter( item => 
@@ -49,11 +56,13 @@ export class Playlist extends React.Component {
 
         console.log(tracks)
 
-        this.setState({selectedTrackContent: tracks, listsVisibility: false, selectedPlaylistName: selected[0]['playlistName']});
+        this.props.getSelectedPlaylistID(playlistID);
 
 
+        this.setState({selectedPlaylistID: playlistID,selectedTrackContent: tracks, listsVisibility: false, selectedPlaylistName: selected[0]['playlistName']})
         
     }
+
 
 
     render(){
@@ -72,12 +81,13 @@ export class Playlist extends React.Component {
             renderedJSX = (
                 <>
                     { this.state.listsVisibility ? <h2>My Playlists</h2> : <h2>{this.state.selectedPlaylistName}</h2>}
-                   {this.state.listsVisibility && (<ul id='myPlaylist'>
-                        {this.props.userPlaylists.map(userplaylist => { return <li onClick={this.handlePlaylistsClick} key={userplaylist.playlistName} value={userplaylist.playlistName}>{userplaylist.playlistName}</li>})}
+                    {this.state.listsVisibility && (<ul id='myPlaylist'>
+                        {this.props.userPlaylists.map(userplaylist => { return <li onClick={this.handlePlaylistsClick} key={userplaylist.playlistID} value={userplaylist.playlistID} name={userplaylist.playlistName}>{userplaylist.playlistName}</li>})}
                     </ul>)}
-                    {/* <button className='Playlist-save' onClick={this.props.onSave}>SAVE TO SPOTIFY</button> */}
-                   
-                    { this.state.selectedTrackContent && !this.state.listsVisibility && <TrackList tracks={this.state.selectedTrackContent} isRemoval={true} /> }
+                    
+                    { this.state.selectedTrackContent && !this.state.listsVisibility && <TrackList tracks={this.state.selectedTrackContent} isRemoval={true} onRemove={this.props.onRemove} newListFlag={selectorFlag} selectedPlaylistID={this.state.selectedPlaylistID} /> }
+
+                    {!this.state.listsVisibility && <button className='Playlist-save' onClick={this.props.onSave}>SAVE TO SPOTIFY</button> }
                 </>
             );
         }
