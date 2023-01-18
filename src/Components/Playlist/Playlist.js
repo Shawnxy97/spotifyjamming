@@ -87,7 +87,7 @@ export class Playlist extends React.Component {
                     
                     { this.state.selectedTrackContent && !this.state.listsVisibility && <TrackList tracks={this.state.selectedTrackContent} isRemoval={true} onRemove={this.props.onRemove} newListFlag={selectorFlag} selectedPlaylistID={this.state.selectedPlaylistID} /> }
 
-                    {!this.state.listsVisibility && <button className='Playlist-save' onClick={this.props.onSave}>SAVE TO SPOTIFY</button> }
+                    {!this.state.listsVisibility && <button className='Playlist-save' onClick={this.props.userlistSave}>SAVE TO SPOTIFY</button> }
                 </>
             );
         }

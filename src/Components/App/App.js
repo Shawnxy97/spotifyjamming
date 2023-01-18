@@ -37,7 +37,8 @@ class App extends React.Component{
                   userProfileHovered: false,
                   dropdownHovered: false,
                   newListFlag: true,
-                  selectedPlaylistID: ""
+                  selectedPlaylistID: "",
+                  updatedPlaylists: {}
                   
 
     };
@@ -89,7 +90,7 @@ class App extends React.Component{
       console.log(userPlaylists);
       console.log(updateTracks);
 
-      this.setState({userPlaylists: userPlaylists});
+      this.setState({userPlaylists: userPlaylists, updatedPlaylists: updateTracks  });
     }
     
     
@@ -121,7 +122,7 @@ class App extends React.Component{
         }
       }
       console.log(userPlaylists);
-      this.setState({userPlaylists: userPlaylists});
+      this.setState({userPlaylists: userPlaylists, updatedPlaylists: updateTracks});
     }
     
   }
@@ -218,20 +219,13 @@ class App extends React.Component{
     
   }
 
-  handleUserTrackUpdate(playlistID, updateTrackList){
-    // console.log(updateTrackList);
-    // console.log(playlistID);
+  handleUserTrackUpdate(){
     //get uris of updated tracks
     //update the state's userplaylist
+    const tracksURIs = this.state.updatedPlaylists.tracks.map(track => track.uri);
+    Spotify.updateUserPlaylist(this.state.selectedPlaylistID, tracksURIs);
   }
 
-  handleUserTrackRemove(playlistID, updateTracklist){
-    //update Userplaylist state
-  }
-
-  handleUserTrackAdd(playlistID, updateTracklist){
-
-  }
 
   handleNewListFlag(flag){
     this.setState({newListFlag: flag});
@@ -253,7 +247,7 @@ class App extends React.Component{
           { !this.state.isDisplayUserPlaylists && <SearchBar onSearch={this.search} />}
           <div className="App-playlist">
             { !this.state.isDisplayUserPlaylists && <SearchResults selectedPlaylistID={this.state.selectedPlaylistID} searchResults={this.state.searchResults} onAdd={this.addTrack} newListFlag={this.state.newListFlag} />}
-            { !this.state.isDisplayUserPlaylists && <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} userPlaylists={this.state.userPlaylists} onRemove={this.removeTrack} onNameChange={this.updatePlaylistName} onSave={this.savePlaylist} onUserTrackUpdate={this.handleUserTrackUpdate} handleNewListFlag={this.handleNewListFlag} getSelectedPlaylistID={this.getSelectedPlaylistID}/>}
+            { !this.state.isDisplayUserPlaylists && <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} userPlaylists={this.state.userPlaylists} onRemove={this.removeTrack} onNameChange={this.updatePlaylistName} onSave={this.savePlaylist} onUserTrackUpdate={this.handleUserTrackUpdate} handleNewListFlag={this.handleNewListFlag} getSelectedPlaylistID={this.getSelectedPlaylistID} userlistSave={this.handleUserTrackUpdate} />}
             { this.state.isDisplayUserPlaylists && <UserPlaylist playlists={this.state.userPlaylists} />}
             
           </div>

@@ -146,5 +146,19 @@ export const Spotify = {
             return tracks;
            
         })
+    },
+
+    updateUserPlaylist(playlistID, tracksURIs){
+        let accessToken = Spotify.getAccessToken();
+        let headers = { Authorization: `Bearer ${accessToken}`};
+
+        console.log(playlistID, "-------Spotify API");
+        console.log(tracksURIs);
+
+        return fetch(baseAddress+`/v1/playlists/${playlistID}/tracks`, {
+            headers:headers,
+            method: "PUT",
+            body: JSON.stringify({uris: tracksURIs})
+        })
     }
 };
