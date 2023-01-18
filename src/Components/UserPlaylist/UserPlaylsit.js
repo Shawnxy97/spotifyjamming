@@ -18,7 +18,7 @@ export class UserPlaylist extends React.Component {
             {this.props.playlists.map( playlist => {
                 return (<div className='UserPlaylist'>
                             <h2>{playlist.playlistName}</h2>
-                            {playlist.tracks.map( track => <Track track={track} /> )}
+                            {playlist.tracks.map( track => <Track track={track} userplaylistsFlag={true}/> )}
                         </div>);
                 // return (
                 //     <div className='UserPlaylist'>

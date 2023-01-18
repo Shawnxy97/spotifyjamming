@@ -20,20 +20,26 @@ export class Track extends React.Component {
     renderAction(){
         let isRemoval = this.props.isRemoval;
         let newList = this.props.newListFlag;
-        if(newList){
-            if(isRemoval){
-                return <button className="Track-action" onClick={this.removeTrack}>-</button>;
-            }else{
-                return <button className="Track-action" onClick={this.addTrack}>+</button>;
-            }
+        if(this.props.userplaylistsFlag){
+            return;
         }else{
-            //UserPlaylist Removal
-            if(isRemoval){
-                return <button className="Track-action" onClick={this.removeTrack}>-</button>;
+            if(newList){
+                if(isRemoval){
+                    return <button className="Track-action" onClick={this.removeTrack}>-</button>;
+                }else{
+                    return <button className="Track-action" onClick={this.addTrack}>+</button>;
+                }
             }else{
-                return <button className="Track-action" onClick={this.addTrack}>+</button>;
+                //UserPlaylist Removal
+                if(isRemoval){
+                    return <button className="Track-action" onClick={this.removeTrack}>-</button>;
+                }else{
+                    return <button className="Track-action" onClick={this.addTrack}>+</button>;
+                }
             }
+
         }
+        
         
     }
     render(){

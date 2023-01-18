@@ -13,8 +13,8 @@ export class UserDropdown extends React.Component {
         return (
             <div id="UserDropdown" style={isDisplay} onMouseEnter={this.props.onMouseIn} onMouseLeave={this.props.onMouseLeave}>
                 <ul>
-                    <li onClick={this.props.onClick}>My Playlists</li>
-                    <li>Logout</li>
+                    {this.props.displayLists ? <li onClick={this.props.onClick}>Back to Home</li> : <li onClick={this.props.onClick}>View My Playlists</li>}
+                    {/* <li>Logout</li> */}
                 </ul>
             </div>
         );

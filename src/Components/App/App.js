@@ -241,7 +241,7 @@ class App extends React.Component{
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing </h1>
         <UserProfile username={this.state.userName} image={this.state.userImage} onMouseEnter={this.handleUserProfileHover} onMouseOut={this.handleUserProfileOut} />
-        <UserDropdown isShow={this.state.userDropdown}  onMouseIn={this.handleUserDropdownIn} onMouseLeave={this.handleUserDropdownOut} onClick={this.handlePlaylistClick}/>
+        <UserDropdown displayLists={this.state.isDisplayUserPlaylists} isShow={this.state.userDropdown}  onMouseIn={this.handleUserDropdownIn} onMouseLeave={this.handleUserDropdownOut} onClick={this.handlePlaylistClick}/>
         
         <div className="App">
           { !this.state.isDisplayUserPlaylists && <SearchBar onSearch={this.search} />}
